@@ -1,0 +1,228 @@
+@import url("https://fonts.bunny.net/css?family=Nunito");
+@import "variables";
+@import "bootstrap/scss/bootstrap";
+
+header a {
+    text-decoration: none;
+    color: #000;
+    padding: 20px;
+}
+
+header a .bike {
+    color: #ff6200;
+}
+
+.blink-text-animation span {
+    animation: blink 0.8s infinite both;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0;
+    }
+
+    5% {
+        opacity: 0.4;
+    }
+
+    10% {
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 0.55;
+    }
+
+    20% {
+        opacity: 0.55;
+    }
+
+    25% {
+        opacity: 0;
+    }
+
+    30% {
+        opacity: 0.7;
+    }
+
+    40% {
+        opacity: 0.7;
+    }
+
+    45% {
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.85;
+    }
+
+    65% {
+        opacity: 0.85;
+    }
+
+    70% {
+        opacity: 0;
+    }
+
+    75% {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.panel {
+    border: 1px solid rgba(255, 255, 255, 0.75);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    text-align: center;
+    padding: 50px;
+    font-size: 2em;
+    color: #fff;
+    mix-blend-mode: overlay;
+    transition: 0.5s;
+}
+
+.panel:hover {
+    transform: translateY(-15px);
+    box-shadow: 0 5px 15px rgba(255, 255, 255, 0.75);
+    cursor: pointer;
+}
+
+.banner {
+    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    padding: 50px;
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.circle {
+    position: absolute;
+    width: 900px;
+    height: 900px;
+}
+
+.circle::before,
+.circle::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.2);
+    mix-blend-mode: overlay;
+}
+
+.circle::before {
+    animation: circle 3s linear infinite;
+}
+
+.circle::after {
+    animation: circle 3s 1.5s linear infinite backwards;
+}
+
+@keyframes circle {
+    0% {
+        scale: 0;
+        opacity: 1;
+    }
+
+    90% {
+        scale: 9;
+        opacity: 1;
+    }
+
+    100% {
+        scale: 1.2;
+        opacity: 0;
+    }
+}
+
+.nav-blur {
+    font-family: "Quicksand", sans-serif;
+}
+
+.nav-blur ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-size: 2em;
+}
+
+.nav-blur ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 300;
+    display: inline-block;
+    transition: 1s;
+    position: relative;
+}
+
+.nav-blur ul li:hover a {
+    color: rgb(255, 98, 0);
+    transform: translateX(50px);
+}
+
+.nav-blur ul:hover :not(li:hover) a {
+    filter: blur(3px);
+}
+
+.nav-blur ul li a::before {
+    content: "";
+    position: absolute;
+    width: 120%;
+    aspect-ratio: 1/1;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) translateX(-200%) scale(0);
+    transition: 1s;
+    filter: blur(2px);
+}
+
+.nav-blur ul li:hover a::before {
+    transform: translate(-50%, -50%) translateX(0) scale(1);
+}
+
+.nav-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 2, 95, 0.5);
+}
+
+.nav-blur ul:hover + .nav-bg {
+    filter: blur(3px);
+}
+
+.place {
+    background: #dddcdc;
+    height: 300px;
+}
+
+.top-station {
+    align-items: center;
+    justify-content: center;
+    display: inline;
+}
