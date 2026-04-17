@@ -9,11 +9,11 @@ class Rental extends Model
     //
 
     protected $fillable = [
-        'user_id', 'bike_id', 'pickup_station_id', 'return_station_id',
-        'rented_at', 'return_at', 'price', 'total', 'status'
+        'user_id', 'bike_id', 'rent_station_id', 'return_station_id',
+        'rent_at', 'return_at', 'price', 'total_mins', 'status'
     ];
 
-    protected $casts = ['rented_at' => 'datetime', 'return_at' => 'datetime'];
+    protected $casts = ['rent_at' => 'datetime', 'return_at' => 'datetime'];
 
     function user()
     {
@@ -25,9 +25,9 @@ class Rental extends Model
         return $this->belongsTo(Bike::class);
     }
 
-    function pickupStation()
+    function rentStation()
     {
-        return $this->belongsTo(Station::class, 'pickup_station_id');
+        return $this->belongsTo(Station::class, 'rent_station_id');
     }
 
     function returnStation()
@@ -41,7 +41,7 @@ class Rental extends Model
     }
 
     function minutesElapsed() {
-        return now()->diffInMinutes($this->rented_id);
+        return now()->diffInMinutes($this->rent_id);
     }
 
     function currentAmount() {

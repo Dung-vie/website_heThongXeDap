@@ -13,7 +13,7 @@ class RentalController extends Controller
     public function rentForm()
     {
         $user = Auth::user();
-        $activeRental = $user->activeRental()->with(['bike', 'pickupStation'])->first();
+        $activeRental = $user->activeRental()->with(['bike', 'rentStation'])->first();
 
         return view('rental.rent', compact('activeRental'));
     }
@@ -29,7 +29,7 @@ class RentalController extends Controller
 
         $request->validate([
             'bike_id'           => 'required|exists:bikes,id',
-            'pickup_station_id' => 'required|exists:stations,id',
+            'rent_station_id' => 'required|exists:stations,id',
         ]);
 
         $bike = Bike::findOrFail($request->bike_id);
@@ -43,8 +43,8 @@ class RentalController extends Controller
         Rental::create([
             'user_id'           => $user->id,
             'bike_id'           => $bike->id,
-            'pickup_station_id' => $request->pickup_station_id,
-            'rented_at'         => now(),
+            'rent_station_id' => $request->rent_station_id,
+            'rent_at'         => now(),
             'price'             => 200,
             'status'            => 'active',
         ]);
@@ -58,7 +58,7 @@ class RentalController extends Controller
     public function returnForm()
     {
         $user = Auth::user();
-        $activeRental = $user->activeRental()->with(['bike', 'pickupStation'])->first();
+        $activeRental = $user->activeRental()->with(['bike', 'rentStation'])->first();
 
         if (!$activeRental) {
             return redirect()->route('home')->with('error', 'Bạn không có xe đang thuê.');
@@ -89,32 +89,34 @@ class RentalController extends Controller
         }
 
         // Tính số phút và tiền
-        $mins        = now()->diffInMinutes($activeRental->rented_at);
+        $mins = now()->diffInMinutes($activeRental->rent_at);
         $totalAmount = $mins * $activeRental->price;
 
         // Cập nhật bản ghi thuê xe
         $activeRental->update([
             'return_station_id' => $returnStation->id,
             'return_at'       => now(),
-            'duration_mins'     => $mins,
+            'total_mins'     => $mins,
             'total_amount'      => $totalAmount,
-            'status'            => 'returned',
+            'status'            => 'return',
         ]);
 
         // Xe về trạm mới
         $activeRental->bike->update(['station_id' => $returnStation->id]);
 
         // Chuyển đến trang đánh giá
-        return redirect()->route('review.formRental', $activeRental->id);
+        return redirect()->route('review.form', $activeRental->id);
     }
 
     public function history()
     {
-        $rentals = Rental::with(['bike', 'pickupStation', 'returnStation'])
+        $rentals = Rental::with(['bike', 'rentStation', 'returnStation'])
             ->where('user_id', Auth::id())
-            ->where('status', 'returned')
-            ->orderByDesc('rented_at')
+            ->where('status', 'return')
+            ->orderByDesc('rent_at')
             ->paginate(10);
+
+            // dd($rentals);
 
         return view('rental.history', compact('rentals'));
     }

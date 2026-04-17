@@ -15,28 +15,28 @@ class ReviewController extends Controller
      {
          // Chỉ owner mới xem được
          abort_if($rental->user_id !== Auth::id(), 403);
-         abort_if($rental->status !== 'returned', 403);
- 
+         abort_if($rental->status !== 'return', 403);
+
          // Nếu đã đánh giá rồi thì về trang chủ
          if ($rental->review) {
-             return redirect()->route('home')->with('info', 'Bạn đã đánh giá chuyến đi này rồi.');
+            return redirect()->route('home')->with('info', 'Bạn đã đánh giá chuyến đi này rồi.');
          }
- 
-         return view('form', compact('rental'));
+
+         return view('rental.form', compact('rental'));
      }
- 
+
      /** Lưu đánh giá. */
      public function store(Request $request, Rental $rental)
      {
          abort_if($rental->user_id !== Auth::id(), 403);
- 
+
          $request->validate([
              'bike_rating'     => 'required|integer|between:1,5',
              'bike_comment'    => 'nullable|max:200',
              'station_rating'  => 'required|integer|between:1,5',
              'station_comment' => 'nullable|max:200',
          ]);
- 
+
          Review::create([
              'user_id'        => Auth::id(),
              'rental_id'      => $rental->id,
@@ -47,7 +47,7 @@ class ReviewController extends Controller
              'station_rating' => $request->station_rating,
              'station_comment'=> $request->station_comment,
          ]);
- 
+
          return redirect()->route('home')->with('success', 'Cảm ơn bạn đã đánh giá!');
     }
 }

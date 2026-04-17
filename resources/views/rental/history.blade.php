@@ -14,11 +14,11 @@
                                     <div class="col-md-4">
                                         <p class="mb-1">
                                             <i class="bi bi-calendar-check text-success"></i>
-                                            <strong>Bắt đầu:</strong> {{ $rental->rented_at->format('d/m/Y H:i') }}
+                                            <strong>Bắt đầu:</strong> {{ $rental->rent_at->format('d/m/Y H:i') }}
                                         </p>
                                         <p class="mb-1">
                                             <i class="bi bi-calendar-x text-danger"></i>
-                                            <strong>Trả xe:</strong> {{ $rental->returned_at?->format('d/m/Y H:i') ?? '---' }}
+                                            <strong>Trả xe:</strong> {{ $rental->return_at?->format('d/m/Y H:i') ?? '---' }}
                                         </p>
                                     </div>
                                     <div class="col-md-4">
@@ -28,7 +28,7 @@
                                         </p>
                                         <p class="mb-1">
                                             <i class="bi bi-geo-alt text-warning"></i>
-                                            <strong>Lấy xe:</strong> {{ $rental->pickupStation->name }}
+                                            <strong>Lấy xe:</strong> {{ $rental->rentStation->name }}
                                         </p>
                                         <p class="mb-1">
                                             <i class="bi bi-geo-alt-fill text-success"></i>
@@ -38,7 +38,7 @@
                                     <div class="col-md-4 text-md-end">
                                         <p class="mb-1">
                                             <i class="bi bi-clock"></i>
-                                            <strong>Thời gian:</strong> {{ $rental->duration_mins ?? 0 }} phút
+                                            <strong>Thời gian:</strong> {{ $rental->total_mins ?? 0 }} phút
                                         </p>
                                         <p class="mb-0">
                                             <span class="badge bg-success fs-6">
@@ -53,7 +53,7 @@
                     </div>
                 @endforeach
             </div>
-    
+
             {{-- Phân trang --}}
             <div class="d-flex justify-content-center mt-3">
                 {{ $rentals->links() }}

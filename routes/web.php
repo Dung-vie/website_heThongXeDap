@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdminBikeController;
+use App\Http\Controllers\AdminStationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RentalController;
@@ -40,11 +42,29 @@ Route::middleware('auth')->group(function () {
 
 });
 
-Route::prefix('admin')->group(function() {
-    Route::middleware('admin')->group(function() {
-        // Route::get('/', fn() => redirect()->route('admin.index'));
-        Route::get('/', function () {
-            return view('admin.index');
-        })->name('admin.index');
+Route::prefix('admin')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::middleware('admin')->group(function () {
+        Route::get('/', fn() => redirect()->route('admin.bikes.index'));
+
+        // Bin routes phải đặt TRƯỚC resource() ← quan trọng!
+        Route::get('/bikes/bin',               [AdminBikeController::class, 'bin'])->name('admin.bikes.bin');
+        Route::post('/bikes/restore-all',      [AdminBikeController::class, 'restoreAll'])->name('admin.bikes.restoreAll');
+        Route::post('/bikes/delete-all',       [AdminBikeController::class, 'deleteAll'])->name('admin.bikes.deleteAll');
+        Route::post('/bikes/restore-selected', [AdminBikeController::class, 'restoreSelected'])->name('admin.bikes.restoreSelected');
+        Route::post('/bikes/delete-selected',  [AdminBikeController::class, 'deleteSelected'])->name('admin.bikes.deleteSelected');
+        Route::post('/bikes/{id}/restore',     [AdminBikeController::class, 'restore'])->name('admin.bikes.restore');
+        Route::delete('/bikes/{id}/force',     [AdminBikeController::class, 'forceDelete'])->name('admin.bikes.forceDelete');
+        Route::resource('bikes', AdminBikeController::class)->names('admin.bikes');
+
+        // Tương tự cho stations
+        Route::get('/stations/bin',               [AdminStationController::class, 'bin'])->name('admin.stations.bin');
+        Route::post('/stations/restore-all',      [AdminStationController::class, 'restoreAll'])->name('admin.stations.restoreAll');
+        Route::post('/stations/delete-all',       [AdminStationController::class, 'deleteAll'])->name('admin.stations.deleteAll');
+        Route::post('/stations/restore-selected', [AdminStationController::class, 'restoreSelected'])->name('admin.stations.restoreSelected');
+        Route::post('/stations/delete-selected',  [AdminStationController::class, 'deleteSelected'])->name('admin.stations.deleteSelected');
+        Route::post('/stations/{id}/restore',     [AdminStationController::class, 'restore'])->name('admin.stations.restore');
+        Route::delete('/stations/{id}/force',     [AdminStationController::class, 'forceDelete'])->name('admin.stations.forceDelete');
+        Route::resource('stations', AdminStationController::class)->names('admin.stations');
     });
 });

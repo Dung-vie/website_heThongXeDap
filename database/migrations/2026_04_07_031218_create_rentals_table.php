@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId("user_id")->constrained()->onDelete('cascade');
             $table->foreignId("bike_id")->constrained()->onDelete('cascade');
-            $table->foreignId("pickup_station_id")->constrained('stations');
+            $table->foreignId("rent_station_id")->constrained('stations');
             $table->foreignId("return_station_id")->nullable()->constrained('stations')->nullOnDelete();
-            $table->timestamp('rented_at')->nullable();
+            $table->timestamp('rent_at')->nullable();
             $table->timestamp('return_at')->nullable();
             $table->integer('price')->nullable();
             $table->integer('total')->nullable();

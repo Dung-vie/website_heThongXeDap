@@ -10,9 +10,9 @@
             <div class="alert alert-warning">
                 <h5><i class="bi bi-exclamation-triangle"></i> Bạn đang có xe chưa trả</h5>
                 <ul class="mb-0">
-                    <li><strong>Bắt đầu thuê:</strong> {{ $activeRental->rented_at->format('H:i d/m/Y') }}</li>
+                    <li><strong>Bắt đầu thuê:</strong> {{ $activeRental->rent_at->format('H:i d/m/Y') }}</li>
                     <li><strong>Biển số xe:</strong> {{ $activeRental->bike->plate_number }}</li>
-                    <li><strong>Trạm lấy xe:</strong> {{ $activeRental->pickupStation->name }}</li>
+                    <li><strong>Trạm lấy xe:</strong> {{ $activeRental->rentStation->name }}</li>
                     <li><strong>Số phút thuê:</strong> <span id="mins-count">...</span> phút</li>
                     <li><strong>Số tiền tạm tính:</strong> <span id="amount-count">...</span> đ</li>
                 </ul>
@@ -40,7 +40,7 @@
                 {{-- Chọn trạm --}}
                 <div class="mb-3">
                     <label class="form-label fw-bold">Chọn Trạm xe</label>
-                    <select id="station-sel" name="pickup_station_id" class="form-select" disabled>
+                    <select id="station-sel" name="rent_station_id" class="form-select" disabled>
                         <option value="">-- Chọn Trạm --</option>
                     </select>
                 </div>
@@ -128,7 +128,7 @@
 
         // Đồng hồ đếm thời gian thuê
         @if ($activeRental ?? false)
-            const rentedAt = new Date('{{ $activeRental->rented_at->toISOString() }}');
+            const rentedAt = new Date('{{ $activeRental->rent_at->toISOString() }}');
             const price = {{ $activeRental->price }};
 
             function updateClock() {
