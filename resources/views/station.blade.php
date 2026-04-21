@@ -21,7 +21,7 @@
 
 <script>
 fetch('/json/communes.json')
-    .then(res => res.json()) 
+    .then(res => res.json())
     .then(data => {
         const select = document.getElementById('ward-select');
         select.innerHTML = '<option disabled selected>Chọn phường</option>';

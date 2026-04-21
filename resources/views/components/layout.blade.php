@@ -81,24 +81,22 @@
         </div>
     </main>
 
-    <footer class="py-4 mt-4 bg-black">
+    <footer class="py-5 mt-5 bg-black">
         <div class="container">
             <div class="row text-white">
-                <div class="col-md-4 text-center">
+                <div class="col-md-6 ">
                     <img src="{{ asset('images/logoThanhDoanTP.png') }}" alt="Thành Đoàn TP.HCM" height="60">
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <h6 class="mb-1">Thành Đoàn TP.HCM</h6>
                     <p class="mb-1"><i class="bi bi-geo-alt"></i> Số 1 Phạm Ngọc Thạch, Quận 1, TP HCM</p>
-                    <p class="mb-0"><i class="bi bi-envelope"></i> thanhdoan@tphcm.gov.vn</p>
-                </div>
-                <div class="col-md-4">
+                    <p class="mb-1"><i class="bi bi-envelope"></i>Liên hệ: thanhdoan@tphcm.gov.vn</p>
                     <p class="mb-0">&copy; Thành Đoàn TP.HCM. All rights reserved.</p>
                 </div>
             </div>
         </div>
     </footer>
-
+@stack('scripts')
 </body>
 
 </html>

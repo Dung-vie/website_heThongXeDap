@@ -12,7 +12,8 @@ class TopBiker extends Model
         'user_id', 'month', 'year', 'rank', 'total_mins', 'total_rentals'
     ];
 
-    function users() {
+    
+    function user() {
         return $this->belongsTo(User::class);
     }
 }

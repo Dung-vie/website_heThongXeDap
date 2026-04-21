@@ -96,7 +96,7 @@ class RentalController extends Controller
         $activeRental->update([
             'return_station_id' => $returnStation->id,
             'return_at'       => now(),
-            'total_mins'     => $mins,
+            'total_mins'     => ($mins / -1),
             'total_amount'      => $totalAmount,
             'status'            => 'return',
         ]);

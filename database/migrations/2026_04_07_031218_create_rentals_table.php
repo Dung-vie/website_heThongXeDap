@@ -19,8 +19,8 @@ return new class extends Migration
             $table->foreignId("return_station_id")->nullable()->constrained('stations')->nullOnDelete();
             $table->timestamp('rent_at')->nullable();
             $table->timestamp('return_at')->nullable();
+            $table->integer('total_mins')->nullable();
             $table->integer('price')->nullable();
-            $table->integer('total')->nullable();
             $table->enum('status', ['active', 'return'])->default('active');
             $table->timestamps();
         });

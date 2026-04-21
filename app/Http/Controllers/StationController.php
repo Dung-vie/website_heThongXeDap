@@ -50,7 +50,7 @@ class StationController extends Controller
         $page    = (int) $request->get('page', 1);
 
         // 5 đánh giá mỗi lần, có nút tải thêm
-        $reviews = Review::with('user')
+        $reviews = Review::with('user') 
             ->where('station_id', $id)
             ->latest()
             ->paginate(5, ['*'], 'page', $page);

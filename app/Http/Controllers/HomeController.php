@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Bike;
 use App\Models\Station;
+use App\Models\TopBiker;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -17,7 +18,27 @@ class HomeController extends Controller
         $totalBikes = Bike::query()->count();
         $totalStations = Station::query()->count();
 
-        return view('home', compact('totalBikes', 'totalStations'));
+        $topStations = Station::withAvg('reviews as avg_rating', 'station_rating')
+            ->orderByDesc('avg_rating')
+            ->limit(10)
+            ->get();
+
+        $topStations->each(function ($station) {
+            $station->setRelation('reviews', $station->reviews()->latest()->limit(3)->get());
+        });
+
+        // dd($topStations);
+
+        $month = now()->month;
+        $year  = now()->year;
+
+        $topBikers = TopBiker::with('user')
+            ->where('month', $month)
+            ->where('year', $year)
+            ->orderBy('rank')
+            ->get();
+
+        return view('home', compact('totalBikes', 'totalStations', 'topStations', 'topBikers'));
     }
 
     /**
