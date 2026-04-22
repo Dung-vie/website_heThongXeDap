@@ -21,6 +21,7 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/stations', [StationController::class, 'index'])->name('station');
+Route::get('/stations/{id}', [StationController::class, 'showPage'])->name('stations.show');
 Route::get('/api/stations', [StationController::class, 'byWard']);           // AJAX theo ward
 Route::get('/api/stations/{id}', [StationController::class, 'detail']);  // AJAX chi tiết
 

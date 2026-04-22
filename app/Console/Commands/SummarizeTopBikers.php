@@ -27,9 +27,8 @@ class SummarizeTopBikers extends Command
      */
     public function handle()
     {
-        // Xác định tháng cần tính toán (Ví dụ: tính cho tháng hiện tại)
-        $month = now()->month;
-        $year  = now()->year;
+        $month = now()->subMonth()->month;
+        $year  = now()->subMonth()->year;
 
         // 1. Xóa dữ liệu cũ của đúng tháng/năm đó để tránh trùng lặp
         TopBiker::where('month', $month)->where('year', $year)->delete();
@@ -60,7 +59,7 @@ class SummarizeTopBikers extends Command
                 'month'         => $month,
                 'year'          => $year,
                 'rank'          => $index + 1,
-                'total_mins'    => $row->total_mins_sum ?? 0, // Sửa thành total_mins cho khớp Schema
+                'total_mins'    => $row->total_mins_sum ,
                 'total_rentals' => $row->total_rentals_count,
             ]);
         }

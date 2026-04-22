@@ -32,13 +32,20 @@ class StationController extends Controller
                     'id'           => $s->id,
                     'name'         => $s->name,
                     'status'       => $s->status,
-                    'current_bikes'=> $s->current_bikes,
+                    'current_bikes' => $s->current_bikes,
                     'empty_slots'  => $emptySlots,
                     'total_slots'  => $s->total_slots,
                 ];
             });
 
         return response()->json($stations);
+    }
+
+    public function showPage($id)
+    {
+        $station = Station::with(['reviews.user'])->findOrFail($id);
+        $parked  = $station->bikes()->whereNotNull('station_id')->count();
+        return view('station', compact('station', 'parked'));
     }
 
     /**
@@ -50,7 +57,7 @@ class StationController extends Controller
         $page    = (int) $request->get('page', 1);
 
         // 5 đánh giá mỗi lần, có nút tải thêm
-        $reviews = Review::with('user') 
+        $reviews = Review::with('user')
             ->where('station_id', $id)
             ->latest()
             ->paginate(5, ['*'], 'page', $page);
@@ -64,12 +71,12 @@ class StationController extends Controller
             'address'      => $station->address,
             'total_slots'  => $station->total_slots,
             'empty_slots'  => $emptySlots,
-            'current_bikes'=> $parked,
+            'current_bikes' => $parked,
             'status'       => $station->status,
             'reviews'      => $reviews->map(fn($r) => [
                 'user_name'      => $r->user->name ?? 'Ẩn danh',
                 'station_rating' => $r->station_rating,
-                'station_comment'=> $r->station_comment,
+                'station_comment' => $r->station_comment,
             ]),
             'has_more'  => $reviews->hasMorePages(),
             'next_page' => $page + 1,

@@ -90,8 +90,9 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h3 class="card-title fs-6" style="cursor:pointer">
-                                        <a href="{{ route('station') }}"
-                                            class="text-dark text-decoration-none">{{ $station->name }}</a>
+                                        <a href="{{ route('stations.show', $station->id) }}" class="text-dark text-decoration-none">
+                                            {{ $station->name }}
+                                        </a>
                                     </h3>
                                     <div class="mb-2">
                                         @for ($i = 1; $i <= 5; $i++)

@@ -29,8 +29,8 @@ class HomeController extends Controller
 
         // dd($topStations);
 
-        $month = now()->month;
-        $year  = now()->year;
+        $month = now()->subMonth()->month;
+        $year  = now()->subMonth()->year;
 
         $topBikers = TopBiker::with('user')
             ->where('month', $month)
