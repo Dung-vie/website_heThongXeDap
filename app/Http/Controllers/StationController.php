@@ -27,14 +27,14 @@ class StationController extends Controller
             ])
             ->get()
             ->map(function ($s) {
-                $emptySlots = $s->total_slots - $s->current_bikes;
+                $emptySlots = $s->slots - $s->current_bikes;
                 return [
                     'id'           => $s->id,
                     'name'         => $s->name,
                     'status'       => $s->status,
                     'current_bikes' => $s->current_bikes,
                     'empty_slots'  => $emptySlots,
-                    'total_slots'  => $s->total_slots,
+                    'slots'  => $s->slots,
                 ];
             });
 
@@ -63,13 +63,13 @@ class StationController extends Controller
             ->paginate(5, ['*'], 'page', $page);
 
         $parked     = $station->bikes()->whereNotNull('station_id')->count();
-        $emptySlots = $station->total_slots - $parked;
+        $emptySlots = $station->slots - $parked;
 
         return response()->json([
             'id'           => $station->id,
             'name'         => $station->name,
             'address'      => $station->address,
-            'total_slots'  => $station->total_slots,
+            'slots'  => $station->slots,
             'empty_slots'  => $emptySlots,
             'current_bikes' => $parked,
             'status'       => $station->status,

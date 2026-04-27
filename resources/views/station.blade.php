@@ -14,13 +14,13 @@
 
                     <div class="row mb-3 text-center">
                         <div class="col">
-                            Tổng chỗ: <strong>{{ $station->total_slots }}</strong>
+                            Tổng chỗ: <strong>{{ $station->slots }}</strong>
                         </div>
 
                         @php
-                            $emptySlots = $station->total_slots - $parked;
-                            $emptyColor = $emptySlots >= $station->total_slots * 0.5 ? 'text-success' : 'text-danger';
-                            $bikeColor = $parked >= $station->total_slots * 0.5 ? 'text-success' : 'text-danger';
+                            $emptySlots = $station->slots - $parked;
+                            $emptyColor = $emptySlots >= $station->slots * 0.5 ? 'text-success' : 'text-danger';
+                            $bikeColor = $parked >= $station->slots * 0.5 ? 'text-success' : 'text-danger';
                         @endphp
 
                         <div class="col {{ $emptyColor }}">
@@ -34,17 +34,39 @@
 
                     <hr>
 
-                    <h6>Đánh giá gần đây</h6>
+                    <h5>Đánh giá gần đây</h5>
 
                     <div>
                         @forelse($station->reviews as $r)
-                            <div class="border-top pt-2 mt-2">
-                                <strong>{{ $r->user->name ?? 'Ẩn danh' }}</strong>
-                                {{ str_repeat('⭐', $r->station_rating) }}
-                                <p class="mb-0 text-muted small border">
-                                    {{ $r->station_comment ?? '(Không có bình luận)' }}
-                                </p>
+                            <div class="d-flex align-items-start mt-3">
+
+                                {{-- Avatar --}}
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode($r->user->name ?? 'A') }}"
+                                    class="rounded-circle me-2" width="36" height="36">
+
+                                {{-- Nội dung --}}
+                                <div>
+                                    <div class="bg-light px-3 py-2" style="border-radius:18px;">
+
+                                        <strong class="me-2">
+                                            {{ $r->user->name ?? 'Ẩn danh' }}
+                                        </strong>
+
+                                        <span class="small text-warning">
+                                            {{ str_repeat('⭐', $r->station_rating) }}
+                                        </span>
+
+                                        <div class="small mt-1">
+                                            {{ $r->station_comment ?? '(Không có bình luận)' }}
+                                        </div>
+                                    </div>
+
+                                    <div class="small text-muted mt-1 ms-2">
+                                        Thích
+                                    </div>
+                                </div>
                             </div>
+
                         @empty
                             <p class="text-muted">Chưa có đánh giá.</p>
                         @endforelse
@@ -53,7 +75,6 @@
                 </div>
             </div>
         @else
-            {{-- CASE 2: LIST --}}
             <h4 class="fw-bold mb-4">
                 <i class="bi bi-geo-alt-fill text-primary"></i> Trạm xe
             </h4>
@@ -126,15 +147,16 @@
                 '<span class="badge bg-warning text-dark"> Bảo trì</span>';
 
             // Màu số xe: >= 50% tổng chỗ → xanh, ngược lại → đỏ
-            const bikeColor = s.current_bikes >= s.total_slots * 0.5 ?
+            const bikeColor = s.current_bikes >= s.slots * 0.5 ?
                 'text-success' : 'text-danger';
 
             // Màu chỗ trống: >= 50% tổng chỗ → xanh, ngược lại → đỏ
-            const slotColor = s.empty_slots >= s.total_slots * 0.5 ?
+            const slotColor = s.empty_slots >= s.slots * 0.5 ?
                 'text-success' : 'text-danger';
 
             return `
         <div class="card mb-2 shadow-sm">
+
             <div class="card-header d-flex justify-content-between align-items-center"
                  style="cursor:pointer"
                  onclick="toggleDetail(${s.id}, this)">
@@ -180,16 +202,16 @@
 
                 // Chỉ render khung HTML lần đầu (page 1)
                 if (page === 1) {
-                    const emptyColor = data.empty_slots >= data.total_slots * 0.5 ?
+                    const emptyColor = data.empty_slots >= data.slots * 0.5 ?
                         'text-success' : 'text-danger';
-                    const bikeColor = data.current_bikes >= data.total_slots * 0.5 ?
+                    const bikeColor = data.current_bikes >= data.slots * 0.5 ?
                         'text-success' : 'text-danger';
 
                     el.innerHTML = `
                     <p> <strong>Địa chỉ:</strong> ${data.address}</p>
                     <div class="row mb-3 text-center">
                         <div class="col">
-                            Tổng chỗ: <strong>${data.total_slots}</strong>
+                            Tổng chỗ: <strong>${data.slots}</strong>
                         </div>
                         <div class="col ${emptyColor}">
                             Chỗ trống: <strong>${data.empty_slots}</strong>
@@ -199,7 +221,7 @@
                         </div>
                     </div>
                     <hr>
-                    <h6> Đánh giá gần đây</h6>
+                    <h5> Đánh giá gần đây</h5>
                     <div id="reviews-${id}"></div>
                     <button id="load-more-${id}"
                         class="btn btn-sm btn-outline-secondary mt-2"

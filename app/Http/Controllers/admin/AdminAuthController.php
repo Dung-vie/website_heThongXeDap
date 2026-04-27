@@ -7,8 +7,9 @@ use App\Models\Bike;
 use App\Models\Station;
 use Illuminate\Http\Request;
 
-class AdminBikeController extends Controller
+class AdminAuthController extends Controller
 {
+    //
     // GET /admin/bikes
     public function index()
     {

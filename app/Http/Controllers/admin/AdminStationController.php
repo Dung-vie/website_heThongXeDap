@@ -1,64 +1,107 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Models\Station;
 use Illuminate\Http\Request;
 
 class AdminStationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $stations = Station::withCount('bikes as bike_count')
+            ->withAvg('reviews as avg_rating', 'station_rating')
+            ->paginate(10);
+
+        return view('admin.stations.index', compact('stations'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    public function show($id)
+    {
+        $station   = Station::with(['reviews.user'])->findOrFail($id);
+        $bikeCount = $station->bikes()->count();
+        $emptySlot = $station->slots - $bikeCount;
+        return view('admin.stations.show', compact('station', 'bikeCount', 'emptySlot'));
+    }
+
     public function create()
     {
-        //
+        return view('admin.stations.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name'      => 'required',
+            'ward_code' => 'required',
+            'address'   => 'required',
+            'slots'     => 'required|integer|min:1',
+            'status'    => 'required|in:active,maintenance',
+        ]);
+
+        Station::create($request->only('name', 'ward_code', 'address', 'slots', 'status'));
+        return redirect()->route('admin.stations.index')->with('success', 'Thêm trạm thành công');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit($id)
     {
-        //
+        $station = Station::findOrFail($id);
+        return view('admin.stations.edit', compact('station'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $station = Station::findOrFail($id);
+        $request->validate([
+            'name'    => 'required',
+            'address' => 'required',
+            'slots'   => 'required|integer|min:1',
+            'status'  => 'required|in:active,maintenance',
+        ]);
+
+        $station->update($request->only('name', 'address', 'slots', 'status'));
+        return redirect()->route('admin.stations.index')->with('success', 'Cập nhật thành công');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
+    public function destroy($id)
     {
-        //
+        Station::findOrFail($id)->delete();
+        return redirect()->route('admin.stations.index')->with('success', 'Đã chuyển vào thùng rác');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
+    public function bin()
     {
-        //
+        $stations = Station::onlyTrashed()->paginate(10);
+        return view('admin.stations.bin', compact('stations'));
+    }
+
+    public function restore($id)
+    {
+        Station::withTrashed()->findOrFail($id)->restore();
+        return redirect()->route('admin.stations.index')->with('success', 'Khôi phục thành công');
+    }
+
+    public function forceDelete($id)
+    {
+        Station::withTrashed()->findOrFail($id)->forceDelete();
+        return back()->with('success', 'Xóa thành công');
+    }
+
+    public function bulk(Request $request)
+    {
+        $ids    = $request->input('ids', []);
+        $action = $request->input('action');
+
+        if (empty($ids)) return back()->with('error', 'Chưa chọn trạm nào');
+
+        match($action) {
+            'restore'      => Station::withTrashed()->whereIn('id', $ids)->restore(),
+            'force-delete' => Station::withTrashed()->whereIn('id', $ids)->forceDelete(),
+            'soft-delete'  => Station::whereIn('id', $ids)->delete(),
+            default        => null
+        };
+
+        return back()->with('success', 'Thành công');
     }
 }

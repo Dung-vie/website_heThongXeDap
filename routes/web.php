@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\AdminBikeController;
-use App\Http\Controllers\AdminStationController;
+use App\Http\Controllers\Admin\AdminAuthController;
+use App\Http\Controllers\Admin\AdminBikeController;
+use App\Http\Controllers\Admin\AdminStationController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RentalController;
@@ -40,32 +41,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/api/stations-for-rental',   [RentalController::class, 'stationsForRental']);
     Route::get('/api/bikes-in-station/{id}', [RentalController::class, 'bikesInStation']);
     Route::get('/api/stations-for-return',   [RentalController::class, 'stationsForReturn']);
-
 });
 
-Route::prefix('admin')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::middleware('admin')->group(function () {
-        Route::get('/', fn() => redirect()->route('admin.bikes.index'));
+Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
+    Route::get('/', fn() => redirect()->route('admin.bikes.index'));
 
-        // Bin routes phải đặt TRƯỚC resource() ← quan trọng!
-        Route::get('/bikes/bin',               [AdminBikeController::class, 'bin'])->name('admin.bikes.bin');
-        Route::post('/bikes/restore-all',      [AdminBikeController::class, 'restoreAll'])->name('admin.bikes.restoreAll');
-        Route::post('/bikes/delete-all',       [AdminBikeController::class, 'deleteAll'])->name('admin.bikes.deleteAll');
-        Route::post('/bikes/restore-selected', [AdminBikeController::class, 'restoreSelected'])->name('admin.bikes.restoreSelected');
-        Route::post('/bikes/delete-selected',  [AdminBikeController::class, 'deleteSelected'])->name('admin.bikes.deleteSelected');
-        Route::post('/bikes/{id}/restore',     [AdminBikeController::class, 'restore'])->name('admin.bikes.restore');
-        Route::delete('/bikes/{id}/force',     [AdminBikeController::class, 'forceDelete'])->name('admin.bikes.forceDelete');
-        Route::resource('bikes', AdminBikeController::class)->names('admin.bikes');
+    //Bikes
+    Route::get('/bikes/bin', [AdminBikeController::class, 'bin'])->name('bikes.bin');
+    Route::post('/bikes/bulk', [AdminBikeController::class, 'bulk'])->name('bikes.bulk');
+    Route::post('/bikes/{id}/restore', [AdminBikeController::class, 'restore'])->name('bikes.restore');
+    Route::delete('/bikes/{id}/force', [AdminBikeController::class, 'forceDelete'])->name('bikes.force');
+    Route::resource('bikes', AdminBikeController::class)->names('bikes');
 
-        // Tương tự cho stations
-        Route::get('/stations/bin',               [AdminStationController::class, 'bin'])->name('admin.stations.bin');
-        Route::post('/stations/restore-all',      [AdminStationController::class, 'restoreAll'])->name('admin.stations.restoreAll');
-        Route::post('/stations/delete-all',       [AdminStationController::class, 'deleteAll'])->name('admin.stations.deleteAll');
-        Route::post('/stations/restore-selected', [AdminStationController::class, 'restoreSelected'])->name('admin.stations.restoreSelected');
-        Route::post('/stations/delete-selected',  [AdminStationController::class, 'deleteSelected'])->name('admin.stations.deleteSelected');
-        Route::post('/stations/{id}/restore',     [AdminStationController::class, 'restore'])->name('admin.stations.restore');
-        Route::delete('/stations/{id}/force',     [AdminStationController::class, 'forceDelete'])->name('admin.stations.forceDelete');
-        Route::resource('stations', AdminStationController::class)->names('admin.stations');
-    });
+    // Stations
+    Route::get('/stations/bin', [AdminStationController::class, 'bin'])->name('stations.bin');
+    Route::post('/stations/bulk', [AdminStationController::class, 'bulk'])->name('stations.bulk');
+    Route::post('/stations/{id}/restore', [AdminStationController::class, 'restore'])->name('stations.restore');
+    Route::delete('/stations/{id}/force', [AdminStationController::class, 'forceDelete'])->name('stations.force');
+    Route::resource('stations', AdminStationController::class)->names('stations');
 });

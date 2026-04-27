@@ -1,64 +1,64 @@
 <x-layout>
     <div class="row justify-content-center align-items-center g-2">
         <div class="col-md-7">
-        <h4 class= "fw-4 mt-4">
-            <p class= "text-primary text-center">Thuê xe</p>
-        </h4>
+            <h4 class= "fw-4 mt-4">
+                <p class= "text-primary">Thuê xe</p>
+            </h4>
 
-        @if ($activeRental)
-            {{-- Đang có xe chưa trả → hiển thị thông tin --}}
-            <div class="alert alert-warning">
-                <h5><i class="bi bi-exclamation-triangle"></i> Bạn đang có xe chưa trả</h5>
-                <ul class="mb-0">
-                    <li><strong>Bắt đầu thuê:</strong> {{ $activeRental->rent_at->format('H:i d/m/Y') }}</li>
-                    <li><strong>Biển số xe:</strong> {{ $activeRental->bike->plate_number }}</li>
-                    <li><strong>Trạm lấy xe:</strong> {{ $activeRental->rentStation->name }}</li>
-                    <li><strong>Số phút thuê:</strong> <span id="mins-count">...</span> phút</li>
-                    <li><strong>Số tiền tạm tính:</strong> <span id="amount-count">...</span> đ</li>
-                </ul>
-            </div>
-            <a href="{{ route('rental.returnForm') }}" class="btn btn-warning">
-                <i class="bi bi-arrow-return-left"></i> Đến trang trả xe
-            </a>
-        @else
-            {{-- Form thuê xe --}}
-            @error('msg')
-                <div class="alert alert-danger">{{ $message }}</div>
-            @enderror
-
-            <form action="{{ route('rental.rent') }}" method="POST">
-                @csrf
-
-                {{-- Chọn phường --}}
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Chọn Phường</label>
-                    <select id="ward-select" class="form-select">
-                        <option value="">-- Chọn Phường --</option>
-                    </select>
+            @if ($activeRental)
+                {{-- Đang có xe chưa trả → hiển thị thông tin --}}
+                <div class="alert alert-warning">
+                    <h5><i class="bi bi-exclamation-triangle"></i> Bạn đang có xe chưa trả</h5>
+                    <ul class="mb-0">
+                        <li><strong>Bắt đầu thuê:</strong> {{ $activeRental->rent_at->format('H:i d/m/Y') }}</li>
+                        <li><strong>Biển số xe:</strong> {{ $activeRental->bike->plate_number }}</li>
+                        <li><strong>Trạm lấy xe:</strong> {{ $activeRental->rentStation->name }}</li>
+                        <li><strong>Số phút thuê:</strong> <span id="mins-count">...</span> phút</li>
+                        <li><strong>Số tiền tạm tính:</strong> <span id="amount-count">...</span> đ</li>
+                    </ul>
                 </div>
+                <a href="{{ route('rental.returnForm') }}" class="btn btn-warning">
+                    <i class="bi bi-arrow-return-left"></i> Đến trang trả xe
+                </a>
+            @else
+                {{-- Form thuê xe --}}
+                @error('msg')
+                    <div class="alert alert-danger">{{ $message }}</div>
+                @enderror
 
-                {{-- Chọn trạm --}}
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Chọn Trạm xe</label>
-                    <select id="station-sel" name="rent_station_id" class="form-select" disabled>
-                        <option value="">-- Chọn Trạm --</option>
-                    </select>
-                </div>
+                <form action="{{ route('rental.rent') }}" method="POST">
+                    @csrf
 
-                {{-- Chọn biển số --}}
-                <div class="mb-4">
-                    <label class="form-label fw-bold">Chọn biển số xe</label>
-                    <select id="bike-sel" name="bike_id" class="form-select" disabled>
-                        <option value="">-- Chọn xe --</option>
-                    </select>
-                </div>
+                    {{-- Chọn phường --}}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Chọn Phường</label>
+                        <select id="ward-select" class="form-select">
+                            <option value="">-- Chọn Phường --</option>
+                        </select>
+                    </div>
 
-                <button type="submit" class="btn btn-primary w-100 btn-lg">
-                    <i class="bi bi-bicycle"></i> Thuê xe
-                </button>
-            </form>
-        @endif
-    </div>
+                    {{-- Chọn trạm --}}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Chọn Trạm xe</label>
+                        <select id="station-sel" name="rent_station_id" class="form-select" disabled>
+                            <option value="">-- Chọn Trạm --</option>
+                        </select>
+                    </div>
+
+                    {{-- Chọn biển số --}}
+                    <div class="mb-4">
+                        <label class="form-label fw-bold">Chọn biển số xe</label>
+                        <select id="bike-sel" name="bike_id" class="form-select" disabled>
+                            <option value="">-- Chọn xe --</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 btn-lg">
+                        <i class="bi bi-bicycle"></i> Thuê xe
+                    </button>
+                </form>
+            @endif
+        </div>
     </div>
 
 

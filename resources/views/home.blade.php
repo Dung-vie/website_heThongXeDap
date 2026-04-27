@@ -5,13 +5,11 @@
         @if ($topBikers->isEmpty())
             <p class="text-muted text-center">Chưa có dữ liệu tháng trước</p>
         @else
-            {{-- TOP 3: hiển thị khác biệt, thứ tự: 2 - 1 - 3 --}}
             <div class="d-flex justify-content-center align-items-end gap-3 mb-4">
-
                 {{-- Hạng 2 --}}
                 @php $rank2 = $topBikers->firstWhere('rank', 2) @endphp
                 @if ($rank2)
-                    <div class="card text-center p-3" style="width:200px;">
+                    <div class="card text-center p-4" style="width:200px;">
                         <div style="font-size:2rem;">🥈</div>
                         <div class="fw-bold">{{ $rank2->user->name }}</div>
                         <small class="text-muted">***{{ substr($rank2->user->phone, -3) }}</small>
