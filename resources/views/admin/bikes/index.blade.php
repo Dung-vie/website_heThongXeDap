@@ -56,9 +56,9 @@
                             {{-- Tình trạng --}}
                             <td>
                                 @if ($bike->status === 'normal')
-                                    <span class="badge bg-success"><i class="bi bi-check-circle"></i> Bình thường</span>
+                                    <span><i class="bi bi-check-circle"></i> Bình thường</span>
                                 @else
-                                    <span class="badge bg-danger"><i class="bi bi-wrench"></i> Đang sửa</span>
+                                    <span><i class="bi bi-wrench"></i> Đang sửa</span>
                                 @endif
                             </td>
 
@@ -74,11 +74,11 @@
                             {{-- Hành động --}}
                             <td>
                                 <a href="/admin/bikes/{{ $bike->id }}/edit" class="btn btn-sm btn-primary">
-                                    <i class="bi bi-pencil"></i>
+                                    <i class="bi bi-pencil">Sửa</i>
                                 </a>
                                 <button type="button" class="btn btn-sm btn-danger"
                                     onclick="confirmDelete('/admin/bikes/{{ $bike->id }}')">
-                                    <i class="bi bi-trash"></i>
+                                    <i class="bi bi-trash">Xóa</i>
                                 </button>
                             </td>
                         </tr>

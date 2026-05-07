@@ -59,7 +59,7 @@ class HomeController extends Controller
                 });
         }
 
-        return view('home', compact('totalBikes', 'totalStations', 'topStations', 'topBikers'));
+        return view('home', compact('totalBikes', 'totalStations', 'topStations', 'topBikers', 'month', 'year'));
     }
 
     /**

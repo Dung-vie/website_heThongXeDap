@@ -146,14 +146,6 @@
                 '<span class="badge bg-success"> Hoạt động</span>' :
                 '<span class="badge bg-warning text-dark"> Bảo trì</span>';
 
-            // Màu số xe: >= 50% tổng chỗ → xanh, ngược lại → đỏ
-            const bikeColor = s.current_bikes >= s.slots * 0.5 ?
-                'text-success' : 'text-danger';
-
-            // Màu chỗ trống: >= 50% tổng chỗ → xanh, ngược lại → đỏ
-            const slotColor = s.empty_slots >= s.slots * 0.5 ?
-                'text-success' : 'text-danger';
-
             return `
         <div class="card mb-2 shadow-sm">
 
@@ -164,9 +156,9 @@
                     ${stationBadge}
                     <strong class="ms-2">${s.name}</strong>
                     <span class="ms-2">
-                        (<span class="${bikeColor}"> ${s.current_bikes} xe</span>
+                        (<span class = "text-success"> ${s.current_bikes} xe</span>
                         –
-                        <span class="${slotColor}">${s.empty_slots} chỗ trống</span>)
+                        <span class = "text-danger">${s.empty_slots} chỗ trống</span>)
                     </span>
                 </div>
                 <i class="bi bi-chevron-down toggle-icon"></i>
@@ -202,21 +194,16 @@
 
                 // Chỉ render khung HTML lần đầu (page 1)
                 if (page === 1) {
-                    const emptyColor = data.empty_slots >= data.slots * 0.5 ?
-                        'text-success' : 'text-danger';
-                    const bikeColor = data.current_bikes >= data.slots * 0.5 ?
-                        'text-success' : 'text-danger';
-
                     el.innerHTML = `
                     <p> <strong>Địa chỉ:</strong> ${data.address}</p>
                     <div class="row mb-3 text-center">
                         <div class="col">
                             Tổng chỗ: <strong>${data.slots}</strong>
                         </div>
-                        <div class="col ${emptyColor}">
+                        <div class="col text-success">
                             Chỗ trống: <strong>${data.empty_slots}</strong>
                         </div>
-                        <div class="col ${bikeColor}">
+                        <div class="col text-danger">
                             Xe hiện có: <strong>${data.current_bikes}</strong>
                         </div>
                     </div>

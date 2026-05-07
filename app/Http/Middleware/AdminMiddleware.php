@@ -16,7 +16,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if (!session('is_admin')) {
-            return redirect('/login');
+            return redirect('/login')->with('error', 'Bạn không có quyền truy cập trang admin');
         }
         return $next($request);
     }

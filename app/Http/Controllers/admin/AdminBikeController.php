@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class AdminBikeController extends Controller
 {
-    // GET /admin/bikes
     public function index()
     {
         $bikes = Bike::with('station')

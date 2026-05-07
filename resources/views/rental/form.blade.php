@@ -2,7 +2,7 @@
     <div class="row justify-content-center mt-4">
         <div class="col-md-6">
             <h4 class= "fw-4 mt-4">
-                <p class= "text-primary">Đánh giá xe & trạm</p>
+                <p class= "text-primary text-center">Đánh giá xe & trạm</p>
             </h4>
 
             <div class="card shadow">
@@ -70,9 +70,11 @@
                                 placeholder="Trạm rộng rãi, dễ tìm..."></textarea>
                         </div>
 
-                        <button type="submit" class="btn btn-primary w-100 btn-lg">
-                            <i class="bi bi-send"></i> Gửi đánh giá
-                        </button>
+                        <div class="d-flex justify-content-center mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg px-4">
+                                <i class="bi bi-send"></i> Gửi đánh giá
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>

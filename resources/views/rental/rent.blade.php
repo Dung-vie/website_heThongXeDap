@@ -2,7 +2,7 @@
     <div class="row justify-content-center align-items-center g-2">
         <div class="col-md-7">
             <h4 class= "fw-4 mt-4">
-                <p class= "text-primary">Thuê xe</p>
+                <p class= "text-primary text-center">Thuê xe</p>
             </h4>
 
             @if ($activeRental)
@@ -17,9 +17,11 @@
                         <li><strong>Số tiền tạm tính:</strong> <span id="amount-count">...</span> đ</li>
                     </ul>
                 </div>
-                <a href="{{ route('rental.returnForm') }}" class="btn btn-warning">
-                    <i class="bi bi-arrow-return-left"></i> Đến trang trả xe
-                </a>
+                <div class="d-flex justify-content-center mt-4">
+                    <a href="{{ route('rental.returnForm') }}" class="btn btn-warning">
+                        <i class="bi bi-arrow-return-left"></i> Đến trang trả xe
+                    </a>
+                </div>
             @else
                 {{-- Form thuê xe --}}
                 @error('msg')
@@ -53,9 +55,11 @@
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-primary w-100 btn-lg">
-                        <i class="bi bi-bicycle"></i> Thuê xe
-                    </button>
+                    <div class="d-flex justify-content-center mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg px-4">
+                            <i class="bi bi-bicycle"></i> Thuê xe
+                        </button>
+                    </div>
                 </form>
             @endif
         </div>

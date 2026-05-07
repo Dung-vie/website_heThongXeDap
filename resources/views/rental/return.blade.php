@@ -2,7 +2,7 @@
     <div class="row justify-content-center align-items-center g-2">
         <div class="col-md-7">
             <h4 class= "fw-4 mt-4">
-                <p class= "text-primary">Trả xe</p>
+                <p class= "text-primary text-center">Trả xe</p>
             </h4>
 
             {{-- Thông tin xe đang thuê --}}
@@ -51,9 +51,12 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn btn-success w-100 btn-lg">
-                    <i class="bi bi-check-circle"></i> Trả xe và thanh toán
-                </button>
+                <div class="d-flex justify-content-center mt-4">
+                    <button type="submit" class="btn btn-success btn-lg px-4">
+                        <i class="bi bi-check-circle"></i> Trả xe và thanh toán
+                    </button>
+                </div>
+
             </form>
         </div>
     </div>

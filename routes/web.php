@@ -44,7 +44,10 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
-    Route::get('/', fn() => redirect()->route('admin.bikes.index'));
+     Route::get('/', function () {
+        return view('admin.index');
+    });
+    Route::post('/logout', [AdminAuthController::class, 'logout'])->name('logout');
 
     //Bikes
     Route::get('/bikes/bin', [AdminBikeController::class, 'bin'])->name('bikes.bin');

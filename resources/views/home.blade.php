@@ -1,15 +1,15 @@
 <x-layout>
     <div class="container top-biker">
         <h2 class="blink-text py-5">Top Biker</h2>
-
         @if ($topBikers->isEmpty())
             <p class="text-muted text-center">Chưa có dữ liệu tháng trước</p>
         @else
+            <h3 class="mb-5 text-center text-success">Top tháng {{ $month }} năm {{ $year }}</h3>
             <div class="d-flex justify-content-center align-items-end gap-3 mb-4">
                 {{-- Hạng 2 --}}
                 @php $rank2 = $topBikers->firstWhere('rank', 2) @endphp
                 @if ($rank2)
-                    <div class="card text-center p-4" style="width:200px;">
+                    <div class="card text-center p-4" style="width:300px;">
                         <div style="font-size:2rem;">🥈</div>
                         <div class="fw-bold">{{ $rank2->user->name }}</div>
                         <small class="text-muted">***{{ substr($rank2->user->phone, -3) }}</small>
@@ -21,7 +21,7 @@
                 {{-- Hạng 1 - to hơn --}}
                 @php $rank1 = $topBikers->firstWhere('rank', 1) @endphp
                 @if ($rank1)
-                    <div class="card text-center p-3 border-warning" style="width:230px; transform: translateY(-20px);">
+                    <div class="card text-center p-3 border-warning" style="width:330px; transform: translateY(-20px);">
                         <div style="font-size:2.5rem;">🥇</div>
                         <div class="fw-bold fs-5">{{ $rank1->user->name }}</div>
                         <small class="text-muted">***{{ substr($rank1->user->phone, -3) }}</small>
@@ -33,7 +33,7 @@
                 {{-- Hạng 3 --}}
                 @php $rank3 = $topBikers->firstWhere('rank', 3) @endphp
                 @if ($rank3)
-                    <div class="card text-center p-3" style="width:200px;">
+                    <div class="card text-center p-3" style="width:300px;">
                         <div style="font-size:2rem;">🥉</div>
                         <div class="fw-bold">{{ $rank3->user->name }}</div>
                         <small class="text-muted">***{{ substr($rank3->user->phone, -3) }}</small>
@@ -45,7 +45,7 @@
             </div>
 
             {{-- TOP 4-10: dạng danh sách --}}
-            <div class="list-group" style="max-width: 600px; margin: 0 auto;">
+            <div class="list-group" style="max-width: 1000px; margin: 0 auto;">
                 @foreach ($topBikers->where('rank', '>', 3) as $biker)
                     <div class="list-group-item d-flex align-items-center gap-3">
                         <span class="fw-bold text-muted" style="width:30px;">#{{ $biker->rank }}</span>
@@ -56,21 +56,21 @@
                     </div>
                 @endforeach
             </div>
-
         @endif
     </div>
 
     <div class="container let-bikego">
         <h2 class="blink-text py-5">Let's Bikego</h2>
-        <div class="place row justify-content-center align-items-center g-2 text-center">
-            <div class="col-md-6">
+        <div class="place row g-2 text-center py-3">
+            <div class="col-md-6 border-end border-danger d-flex flex-column justify-content-center">
                 <h4 class="card-title">Số xe hiện có</h4>
-                <p class="card-text fw-bold fs-4">{{ $totalBikes }} xe</p>
+                <p class="card-text fw-bold fs-4 mb-0">{{ $totalBikes }} xe</p>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 d-flex flex-column justify-content-center">
                 <h4 class="card-title">Số trạm hiện có</h4>
-                <p class="card-text fw-bold fs-4">{{ $totalStations }} trạm</p>
+                <p class="card-text fw-bold fs-4 mb-0">{{ $totalStations }} trạm</p>
             </div>
+
         </div>
     </div>
 
@@ -78,7 +78,7 @@
         <h2 class="blink-text py-5">Top Stations</h2>
         <div class="d-flex align-items-center gap-2">
 
-            <button class="btn btn-primary rounded-circle" onclick="stationPrev()">&#8249;</button>
+           <button class="btn btn-light rounded-circle fs-3"  onclick="stationPrev()">&#8249;</button>
 
             <div style="overflow:hidden; flex:1;">
                 <div id="stationTrack" class="d-flex" style="transition: transform 0.4s ease;">
@@ -88,7 +88,8 @@
                             <div class="card h-100">
                                 <div class="card-body">
                                     <h3 class="card-title fs-6" style="cursor:pointer">
-                                        <a href="{{ route('stations.show', $station->id) }}" class="text-dark text-decoration-none">
+                                        <a href="{{ route('stations.show', $station->id) }}"
+                                            class="text-dark text-decoration-none">
                                             {{ $station->name }}
                                         </a>
                                     </h3>
@@ -114,7 +115,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-primary rounded-circle" onclick="stationNext()">&#8250;</button>
+            <button class="btn btn-light rounded-circle fs-3" onclick="stationNext()">&#8250;</button>
 
         </div>
     </div>
